@@ -193,11 +193,11 @@ fun main(args: Array<String>) {
     println()
     println()
 
-    val bookRequests = Librarian.getRequests()
+    val bookRequests = Librarian.getRequests() // Librarian checks for request
     for((request, reason) in bookRequests.entries) {
         println("$request : $reason")
     }
-    LibraryData.addBook("Machine Learning", "Andrew NG")
+    LibraryData.addBook("Machine Learning", "Andrew NG") // Librarian adds new book on request
     println("Book added successfully")
 
     println()
@@ -217,7 +217,7 @@ fun main(args: Array<String>) {
         }
         if (103 in searchedBooks.keys) {
             if (LibraryData.getFineAmount("abc@lib.com") == 0) { // Checks for fine (No fine in this case)
-                user.borrowBook(searchedBooks[103]!!) // User borrows book
+                user.borrowBook(searchedBooks[103]!!) // User borrows requested book after added
                 println("Book Borrowed")
             }
             else {
