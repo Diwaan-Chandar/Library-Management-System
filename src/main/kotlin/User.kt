@@ -57,10 +57,6 @@ abstract class User {
         Authenticator.addCredential(mailID)
     }
 
-    fun searchBook(title: String): MutableMap<Int, Book> {
-        return data.searchBook(title)
-    }
-
     fun payFine(amount: Int) {
         Librarian.removeFineFromUser(amount, mailID)
     }

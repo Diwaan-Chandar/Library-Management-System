@@ -146,7 +146,7 @@ fun main(args: Array<String>) {
     if (Authenticator.authenticateUser("abc@lib.com")) { // Validates the user
         user.enterLibrary() // User enters library
         println("Entered Library...")
-        val searchedBooks = user.searchBook("400") // User searches book using keyword
+        val searchedBooks = LibraryData.searchBook("400") // User searches book using keyword
         for (book in searchedBooks.values) {
             if (book.isAvailable) {
                 println("${book.bookID} ${book.title} ${book.author}")
@@ -174,7 +174,7 @@ fun main(args: Array<String>) {
     if (Authenticator.authenticateUser("abc@lib.com")) { // Validates user ID
         user.enterLibrary() // User Enters Library
         println("Entered Library...")
-        val searchedBooks = user.searchBook("Machine Learning") // User searches a book using keyword
+        val searchedBooks = LibraryData.searchBook("Machine Learning") // User searches a book using keyword
         if (searchedBooks.isEmpty()) { // The book is not available
             println("No result found!")
         }
@@ -206,7 +206,7 @@ fun main(args: Array<String>) {
     if (Authenticator.authenticateUser("abc@lib.com")) { // Validates user ID
         user.enterLibrary() // User Enters Library again
         println("Entered Library...")
-        val searchedBooks = user.searchBook("Machine Learning") // User searches a book using keyword again
+        val searchedBooks = LibraryData.searchBook("Machine Learning") // User searches a book using keyword again
         if (searchedBooks.isEmpty()) { // The book is available now since it is added by Librarian
             println("No result found!")
         }
