@@ -9,4 +9,5 @@ interface LibrarianInterface {
     fun addFineToUser(mailID: String, noOfDays: Int)
     fun removeFineFromUser(mailID: String, amount: Int)
     fun getRequests(): MutableMap<String, String>
+    //fun getRequests(): MutableMap<String, String>
 }
