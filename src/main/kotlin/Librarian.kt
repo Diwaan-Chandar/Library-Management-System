@@ -22,5 +22,8 @@ object Librarian {
         data.removeFineFromUser(mailID, amount)
     }
 
+    fun getRequests() : MutableMap<String, String> {
+        return LibraryData.getRequests()
+    }
 }
 

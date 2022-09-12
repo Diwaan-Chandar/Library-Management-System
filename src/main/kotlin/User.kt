@@ -64,5 +64,4 @@ abstract class User {
     fun payFine(amount: Int) {
         Librarian.removeFineFromUser(amount, mailID)
     }
-
 }

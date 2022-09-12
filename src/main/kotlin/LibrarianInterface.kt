@@ -8,4 +8,5 @@ interface LibrarianInterface {
     fun searchBook(title: String): MutableMap<Int, Book>
     fun addFineToUser(mailID: String, noOfDays: Int)
     fun removeFineFromUser(mailID: String, amount: Int)
+    fun getRequests(): MutableMap<String, String>
 }

@@ -67,9 +67,13 @@ object LibraryData: UserInterface, LibrarianInterface {
         }
     }
 
-    fun getFineAmount(mailID: String): Int {
+    override fun getFineAmount(mailID: String): Int {
         if(mailID !in fineData.keys) return 0
         return fineData[mailID]!!
+    }
+
+    override fun getRequests(): MutableMap<String, String> {
+        return bookRequests
     }
 }
 

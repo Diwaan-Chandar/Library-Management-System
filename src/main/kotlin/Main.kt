@@ -25,7 +25,7 @@ fun main(args: Array<String>) {
                 println("${availableBooks[eachBookID]?.bookID} ${availableBooks[eachBookID]?.title} ${availableBooks[eachBookID]?.author} ")
             }
         }
-        if (LibraryData.getFineAmount("abc@lib.com") != 0) { // Library checks for fine
+        if (LibraryData.getFineAmount("abc@lib.com") == 0) { // Library checks for fine
             if (101 in availableBooks.keys) {  // Check if it is a valid book ID (Valid in this case)
                 availableBooks[101]?.let { user.borrowBook(it) } // User borrows book
             }
@@ -131,45 +131,38 @@ fun main(args: Array<String>) {
     println()
     println()
 
-    if (Authenticator.authenticateUser("abcd@lib.com")) {
+    if (Authenticator.authenticateUser("abcd@lib.com")) {  // Invalid Mail ID is provided
         user.enterLibrary()
         println("Entered Library...")
         user.exitLibrary()
         println("Exited Library...")
-    } else {
+    } else { // Hence the user is not allowed
         println("User not authenticated")
     }
 
     println()
     println()
 
-    if (Authenticator.authenticateUser("abc@lib.com")) {
-        user.enterLibrary()
+    if (Authenticator.authenticateUser("abc@lib.com")) { // Validates the user
+        user.enterLibrary() // User enters library
         println("Entered Library...")
-        val searchedBooks = user.searchBook("400")
+        val searchedBooks = user.searchBook("400") // User searches book using keyword
         for (book in searchedBooks.values) {
             if (book.isAvailable) {
                 println("${book.bookID} ${book.title} ${book.author}")
             }
         }
         if (102 in searchedBooks.keys) {
-            if (LibraryData.getFineAmount("abc@lib.com") != 0) {
-                user.borrowBook(searchedBooks[102]!!)
+            if (LibraryData.getFineAmount("abc@lib.com") == 0) { // Checks for fine (No fine in this case)
+                user.borrowBook(searchedBooks[102]!!) // User borrows book
             }
             else {
-                println("Please pay fine") // Checks for fine (No fine in this case) (This is not executed)
+                println("Please pay fine")  // This is not executed
             }
         } else {
             println("Invalid Book ID")
         }
-        println("Available Books: ")
-        val availableBooks = LibraryData.getBooks()
-        for (eachBookID in availableBooks.keys) {
-            if (availableBooks[eachBookID]?.isAvailable == true) {
-                println("${availableBooks[eachBookID]?.bookID} ${availableBooks[eachBookID]?.title} ${availableBooks[eachBookID]?.author} ")
-            }
-        }
-        user.exitLibrary()
+        user.exitLibrary() // User exits Library
         println("Exited Library...")
     } else {
         println("User not authenticated")
@@ -178,11 +171,11 @@ fun main(args: Array<String>) {
     println()
     println()
 
-    if (Authenticator.authenticateUser("abc@lib.com")) {
-        user.enterLibrary()
+    if (Authenticator.authenticateUser("abc@lib.com")) { // Validates user ID
+        user.enterLibrary() // User Enters Library
         println("Entered Library...")
-        val searchedBooks = user.searchBook("Machine Learning")
-        if (searchedBooks.isEmpty()) {
+        val searchedBooks = user.searchBook("Machine Learning") // User searches a book using keyword
+        if (searchedBooks.isEmpty()) { // The book is not available
             println("No result found!")
         }
         for (book in searchedBooks.values) {
@@ -190,62 +183,53 @@ fun main(args: Array<String>) {
                 println("${book.bookID} ${book.title} ${book.author}")
             }
         }
-        user.requestBook("Machine Learning", "To learn ML")
-        user.exitLibrary()
+        user.requestBook("Machine Learning", "To learn ML") // User requests library to buy a bool on the topic
+        user.exitLibrary() // User exits Library
+        println("Exited Library...")
+    } else {
+        println("User not authenticated")
+    }
+
+    println()
+    println()
+
+    val bookRequests = Librarian.getRequests()
+    for((request, reason) in bookRequests.entries) {
+        println("$request : $reason")
+    }
+    LibraryData.addBook("Machine Learning", "Andrew NG")
+    println("Book added successfully")
+
+    println()
+    println()
+
+    if (Authenticator.authenticateUser("abc@lib.com")) { // Validates user ID
+        user.enterLibrary() // User Enters Library again
+        println("Entered Library...")
+        val searchedBooks = user.searchBook("Machine Learning") // User searches a book using keyword again
+        if (searchedBooks.isEmpty()) { // The book is available now since it is added by Librarian
+            println("No result found!")
+        }
+        for (book in searchedBooks.values) {
+            if (book.isAvailable) {
+                println("${book.bookID} ${book.title} ${book.author}")
+            }
+        }
+        if (103 in searchedBooks.keys) {
+            if (LibraryData.getFineAmount("abc@lib.com") == 0) { // Checks for fine (No fine in this case)
+                user.borrowBook(searchedBooks[103]!!) // User borrows book
+                println("Book Borrowed")
+            }
+            else {
+                println("Please pay fine")  // This is not executed
+            }
+        } else {
+            println("Invalid Book ID")
+        }
+        user.exitLibrary() // User exits Library
         println("Exited Library...")
     } else {
         println("User not authenticated")
     }
 }
 
-// User enters library
-// User will be allowed if once provided valid ID
-// Go to the respective floor
-// Search the book in the respective rack
-// Take the book you want and approach librarian to borrow
-// Librarian checks for dues and fine (if any)
-// After checking, User borrows the book
-// Librarian marks the borrow details
-
-
-// User enters library
-// User will be allowed if once provided valid ID
-// Go to the respective floor
-// Search the book in the respective rack
-// If the book is not available in rack, approach the librarian
-// The book may not be available in the library or all the copies available might be borrowed
-// Request some new book copies for the library through librarian
-// User may borrow after few days
-
-
-// User enters library
-// User provides invalid ID
-// In case of issues, User contacts the librarian
-// Librarian provides a new ID for the user
-
-
-// User enters library
-// User will be allowed if once provided valid ID
-// Return the book to the librarian
-// Librarian checks for dues and fine (if any)
-// After verification, Librarian marks the return details
-
-
-// User enters library
-// User will be allowed if once provided valid ID
-// Go to the respective floor
-// Search the book in the respective rack
-// Take the book you want and approach librarian to borrow
-// Librarian checks for dues and fine (if any)
-// User had borrowed 6 books already
-// Book is not issued, since user can't borrow more than 6 books
-
-
-// User missed the book
-// User approach librarian
-// Librarian verify the same and check for fine
-// User pays required fine or provide a replacement
-// Librarian mark the return statue
-
-
-//
