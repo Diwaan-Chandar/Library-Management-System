@@ -6,5 +6,6 @@ interface LibrarianInterface {
     fun removeUser(mailID: String)
     fun getBooks(): MutableMap<Int, Book>
     fun searchBook(title: String): MutableMap<Int, Book>
-    fun calculateFine(int noOfDays)
+    fun addFineToUser(mailID: String, noOfDays: Int)
+    fun removeFineFromUser(mailID: String, amount: Int)
 }

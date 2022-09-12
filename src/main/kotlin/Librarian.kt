@@ -14,8 +14,12 @@ object Librarian {
         data.removeUser(mailID)
     }
 
-    fun addFine(noOfDays: Int, mailID: String) {
-        data.calculateFine(noOfDays, mailID)
+    fun addFineToUser(noOfDays: Int, mailID: String) {
+        data.addFineToUser(mailID, noOfDays)
+    }
+
+    fun removeFineFromUser(amount: Int, mailID: String) {
+        data.removeFineFromUser(mailID, amount)
     }
 
 }

@@ -8,10 +8,8 @@ abstract class User {
     private var account: UserAccount? = null
     private val data: UserInterface = LibraryData
     private var inLibrary: Boolean = false
-    protected var fineAmount = 0
 
-    fun borrowBook(book: Book): Unit? {
-        if(fineAmount != 0) return null
+    fun borrowBook(book: Book) {
         val now: LocalDateTime = LocalDateTime.now()
         account?.booksTaken?.put(book, now)
         data.borrowBook(book, mailID)
@@ -27,7 +25,7 @@ abstract class User {
         }
         val now: LocalDateTime = LocalDateTime.now()
         val duration = Duration.between(now, account?.booksTaken?.get(book))
-        calculateFine(duration.toDays().toInt())
+        Librarian.addFineToUser(duration.toDays().toInt(), mailID)
         account?.booksTaken?.remove(book)
         if (book != null) {
             data.returnBook(book)
@@ -63,10 +61,8 @@ abstract class User {
         return data.searchBook(title)
     }
 
-    abstract fun calculateFine(durationInDays: Int)
-
     fun payFine(amount: Int) {
-        Librarian.
+        Librarian.removeFineFromUser(amount, mailID)
     }
 
 }
