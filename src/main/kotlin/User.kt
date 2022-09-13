@@ -1,19 +1,28 @@
 import java.time.LocalDateTime
 import java.time.Duration
 
-abstract class User {
-    private var name: String = ""
-    private var mailID: String = ""
-    private var age: Int = 0
+abstract class User(private var name: String, private var mailID: String, private var age: Int) {
+    abstract val maxBooks: Int
+    abstract val userType: UserTypes
     private var userAccount: UserAccount? = null
     private val data: UserInterface = LibraryData
     private var inLibrary: Boolean = false
 
-    fun borrowBook(book: Book) {
+    init {
+        this.userAccount = UserAccount(this.mailID)
+        Authenticator.addCredential(mailID)
+    }
+
+    fun borrowBook(book: Book): String {
         val now: LocalDateTime = LocalDateTime.now()
+        if (this.userType == UserTypes.STUDENT && userAccount?.booksTaken?.count()!! > (this as Student).maxBooks) {
+            return "Return some books to borrow books"
+        } else if (this.userType == UserTypes.FACULTY && userAccount?.booksTaken?.count()!! > (this as Faculty).maxBooks) {
+            return "Return some books to borrow books"
+        }
         userAccount?.booksTaken?.put(book, now)
         data.borrowBook(book, mailID)
-        return Unit
+        return "Book borrowed"
     }
 
     fun returnBook(bookID: Int) {
@@ -47,15 +56,6 @@ abstract class User {
 
     fun exitLibrary() {
         inLibrary = false
-    }
-
-    fun setDetails(name: String, mailID: String, age: Int) {
-        this.name = name
-        this.mailID = mailID
-        this.age = age
-        this.userAccount = UserAccount(this.mailID)
-
-        Authenticator.addCredential(mailID)
     }
 
     fun payFine(amount: Int) {

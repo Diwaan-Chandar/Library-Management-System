@@ -11,10 +11,9 @@
 //}
 
 fun main(args: Array<String>) {
-    val user: User = Student() // Add a new Student to the library
+    val user: User = Student("ABC", "abc@lib.com", 19) // Add a new Student to the library
     LibraryData.addBook("Harry Potter", "JK Rowling") // Add new Books
     LibraryData.addBook("400 Days", "Chetan Bhagat")
-    user.setDetails("ABC", "abc@lib.com", 19) // Set user details
     if (Authenticator.authenticateUser("abc@lib.com")) { // Verify user ID
         user.enterLibrary() // User enters library
         println("Entered Library...")
@@ -28,7 +27,8 @@ fun main(args: Array<String>) {
         val bookID = 101
         if (LibraryData.getFineAmount("abc@lib.com") == 0) { // Library checks for fine
             if (bookID in availableBooks.keys) {  // Check if it is a valid book ID (Valid in this case)
-                availableBooks[bookID]?.let { user.borrowBook(it) } // User borrows book
+                val message = availableBooks[bookID]?.let { user.borrowBook(it) } // User borrows book
+                println(message)
             }
         } else {
             println("Please pay fine") // Checks for fine (No fine in this case) (This is not executed)
@@ -50,8 +50,7 @@ fun main(args: Array<String>) {
     println()
     println()
 
-    val user2: User = Student() // Add new user to Library
-    user2.setDetails("DEF", "def@lib.com", 19) // Set new user details
+    val user2: User = Student("DEF", "def@lib.com", 19) // Add new user to Library
     if (Authenticator.authenticateUser("def@lib.com")) { // Verify User 2 ID
         user2.enterLibrary() // User 2 enters library
         println("Entered Library...")
@@ -157,7 +156,8 @@ fun main(args: Array<String>) {
         val bookID = 102
         if (bookID in searchedBooks.keys) {
             if (LibraryData.getFineAmount("abc@lib.com") == 0) { // Checks for fine (No fine in this case)
-                user.borrowBook(searchedBooks[bookID]!!) // User borrows book
+                val message = user.borrowBook(searchedBooks[bookID]!!) // User borrows book
+                println(message)
             }
             else {
                 println("Please pay fine")  // This is not executed
@@ -221,8 +221,8 @@ fun main(args: Array<String>) {
         val bookID = 103
         if (bookID in searchedBooks.keys) {
             if (LibraryData.getFineAmount("abc@lib.com") == 0) { // Checks for fine (No fine in this case)
-                user.borrowBook(searchedBooks[bookID]!!) // User borrows requested book after added
-                println("Book Borrowed")
+                val message = user.borrowBook(searchedBooks[bookID]!!) // User borrows requested book after added
+                println(message)
             }
             else {
                 println("Please pay fine")  // This is not executed
