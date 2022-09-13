@@ -25,9 +25,10 @@ fun main(args: Array<String>) {
                 println("${availableBooks[eachBookID]?.bookID} ${availableBooks[eachBookID]?.title} ${availableBooks[eachBookID]?.author} ")
             }
         }
+        val bookID = 101
         if (LibraryData.getFineAmount("abc@lib.com") == 0) { // Library checks for fine
-            if (101 in availableBooks.keys) {  // Check if it is a valid book ID (Valid in this case)
-                availableBooks[101]?.let { user.borrowBook(it) } // User borrows book
+            if (bookID in availableBooks.keys) {  // Check if it is a valid book ID (Valid in this case)
+                availableBooks[bookID]?.let { user.borrowBook(it) } // User borrows book
             }
         } else {
             println("Please pay fine") // Checks for fine (No fine in this case) (This is not executed)
@@ -89,11 +90,11 @@ fun main(args: Array<String>) {
         for ((book, date) in borrowedBooks?.entries!!) {
             println("${book.bookID} ${book.title} $date ")
         }
-        user.returnBook(101) // User returns a book
+        val bookID = 101
+        user.returnBook(bookID) // User returns a book
         println("Book Returned")
         println("Books Available: ")
-        val availableBooks =
-            LibraryData.getBooks() // User search the returned book in library to verify if it is returned
+        val availableBooks = LibraryData.getBooks() // User search the returned book in library to verify if it is returned
         for (eachBookID in availableBooks.keys) {
             if (availableBooks[eachBookID]?.isAvailable == true) {
                 println("${availableBooks[eachBookID]?.bookID} ${availableBooks[eachBookID]?.title} ${availableBooks[eachBookID]?.author} ")
@@ -113,13 +114,14 @@ fun main(args: Array<String>) {
         println("Entered Library...")
         println("Books in hand:")
         val borrowedBooks = user.booksInHand() // User checks for books in hand
+        val bookID = 101
         if (borrowedBooks?.isEmpty() == true) {
             println("No books in hand") // User has no books in hand
         } else { // This is not executed
             for ((book, date) in borrowedBooks?.entries!!) {
                 println("${book.bookID} ${book.title} $date ")
             }
-            user.returnBook(101) // Not returned
+            user.returnBook(bookID) // Not returned
             println("Book Returned")
         }
         user.exitLibrary() // User exits library without any books
@@ -152,9 +154,10 @@ fun main(args: Array<String>) {
                 println("${book.bookID} ${book.title} ${book.author}")
             }
         }
-        if (102 in searchedBooks.keys) {
+        val bookID = 102
+        if (bookID in searchedBooks.keys) {
             if (LibraryData.getFineAmount("abc@lib.com") == 0) { // Checks for fine (No fine in this case)
-                user.borrowBook(searchedBooks[102]!!) // User borrows book
+                user.borrowBook(searchedBooks[bookID]!!) // User borrows book
             }
             else {
                 println("Please pay fine")  // This is not executed
@@ -215,9 +218,10 @@ fun main(args: Array<String>) {
                 println("${book.bookID} ${book.title} ${book.author}")
             }
         }
-        if (103 in searchedBooks.keys) {
+        val bookID = 103
+        if (bookID in searchedBooks.keys) {
             if (LibraryData.getFineAmount("abc@lib.com") == 0) { // Checks for fine (No fine in this case)
-                user.borrowBook(searchedBooks[103]!!) // User borrows requested book after added
+                user.borrowBook(searchedBooks[bookID]!!) // User borrows requested book after added
                 println("Book Borrowed")
             }
             else {
