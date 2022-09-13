@@ -39,7 +39,7 @@ object LibraryData: UserInterface, LibrarianInterface {
 
     }
 
-    override fun getBooks(): MutableMap<Int, Book> {
+    override fun getBookDetails(): MutableMap<Int, Book> {
         return booksAvailable
     }
 

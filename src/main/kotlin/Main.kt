@@ -10,7 +10,7 @@
 //    LibraryData.addUser("Mail ID Here")
 //}
 
-fun main(args: Array<String>) {
+fun main() {
     val user: User = Student("ABC", "abc@lib.com", 19) // Add a new Student to the library
     LibraryData.addBook("Harry Potter", "JK Rowling") // Add new Books
     LibraryData.addBook("400 Days", "Chetan Bhagat")
@@ -18,7 +18,7 @@ fun main(args: Array<String>) {
         user.enterLibrary() // User enters library
         println("Entered Library...")
         println("Books Available: ")
-        val availableBooks = LibraryData.getBooks() // User searches book
+        val availableBooks = LibraryData.getBookDetails() // User searches book
         for (eachBookID in availableBooks.keys) {
             if (availableBooks[eachBookID]?.isAvailable == true) {
                 println("${availableBooks[eachBookID]?.bookID} ${availableBooks[eachBookID]?.title} ${availableBooks[eachBookID]?.author} ")
@@ -55,7 +55,7 @@ fun main(args: Array<String>) {
         user2.enterLibrary() // User 2 enters library
         println("Entered Library...")
         println("Books Available: ")
-        val availableBooks = LibraryData.getBooks() // User 2 searches book
+        val availableBooks = LibraryData.getBookDetails() // User 2 searches book
         for (eachBookID in availableBooks.keys) {
             if (availableBooks[eachBookID]?.isAvailable == true) {
                 println("${availableBooks[eachBookID]?.bookID} ${availableBooks[eachBookID]?.title} ${availableBooks[eachBookID]?.author} ")
@@ -93,7 +93,7 @@ fun main(args: Array<String>) {
         user.returnBook(bookID) // User returns a book
         println("Book Returned")
         println("Books Available: ")
-        val availableBooks = LibraryData.getBooks() // User search the returned book in library to verify if it is returned
+        val availableBooks = LibraryData.getBookDetails() // User search the returned book in library to verify if it is returned
         for (eachBookID in availableBooks.keys) {
             if (availableBooks[eachBookID]?.isAvailable == true) {
                 println("${availableBooks[eachBookID]?.bookID} ${availableBooks[eachBookID]?.title} ${availableBooks[eachBookID]?.author} ")
@@ -235,5 +235,77 @@ fun main(args: Array<String>) {
     } else {
         println("User not authenticated")
     }
+
+    println()
+    println()
+
+    LibraryData.addBook("Book 1", "Author 1")
+    LibraryData.addBook("Book 2", "Author 2")
+    LibraryData.addBook("Book 3", "Author 3")
+    LibraryData.addBook("Book 4", "Author 4")
+    LibraryData.addBook("Book 5", "Author 5")
+    println("5 books added to library")
+
+    println()
+    println()
+
+    if (Authenticator.authenticateUser("abc@lib.com")) { // Validates user ID
+        user.enterLibrary() // User Enters Library again
+        println("Entered Library...")
+        var availableBooks = LibraryData.getBookDetails() // User searches book
+        for (eachBookID in availableBooks.keys) {
+            if (availableBooks[eachBookID]?.isAvailable == true) {
+                println("${availableBooks[eachBookID]?.bookID} ${availableBooks[eachBookID]?.title} ${availableBooks[eachBookID]?.author} ")
+            }
+        }
+        var bookID = 104
+        if (LibraryData.getFineAmount("abc@lib.com") == 0) { // Library checks for fine
+            if (bookID in availableBooks.keys) {  // Check if it is a valid book ID (Valid in this case)
+                val message = availableBooks[bookID]?.let { user.borrowBook(it) } // User borrows third book
+                println(message)
+            }
+        } else {
+            println("Please pay fine") // Checks for fine (No fine in this case) (This is not executed)
+        }
+        bookID = 105
+        if (LibraryData.getFineAmount("abc@lib.com") == 0) { // Library checks for fine
+            if (bookID in availableBooks.keys) {  // Check if it is a valid book ID (Valid in this case)
+                val message = availableBooks[bookID]?.let { user.borrowBook(it) } // User borrows fourth book
+                println(message)
+            }
+        } else {
+            println("Please pay fine") // Checks for fine (No fine in this case) (This is not executed)
+        }
+        bookID = 106
+        if (LibraryData.getFineAmount("abc@lib.com") == 0) { // Library checks for fine
+            if (bookID in availableBooks.keys) {  // Check if it is a valid book ID (Valid in this case)
+                val message = availableBooks[bookID]?.let { user.borrowBook(it) } // User tries to borrow book but its fifth book hence it is not borrowed
+                println(message)
+            }
+        } else {
+            println("Please pay fine") // Checks for fine (No fine in this case) (This is not executed)
+        }
+
+        println("Available Books")
+        availableBooks = LibraryData.getBookDetails() // Book is still available in Available Books
+        for (eachBookID in availableBooks.keys) {
+            if (availableBooks[eachBookID]?.isAvailable == true) {
+                println("${availableBooks[eachBookID]?.bookID} ${availableBooks[eachBookID]?.title} ${availableBooks[eachBookID]?.author} ")
+            }
+        }
+        user.exitLibrary() // User exits Library
+        println("Exited Library...")
+    } else {
+        println("User not authenticated")
+    }
+
+    println()
+    println()
+
+    val bookDetails = Librarian.getBookDetails()
+    for(book in bookDetails.values) {
+        println("${book.bookID} ${book.title} ${book.author} ${book.isAvailable} ${book.holderMailID} ")
+    }
+
 }
 

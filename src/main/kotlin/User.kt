@@ -15,9 +15,9 @@ abstract class User(private var name: String, private var mailID: String, privat
 
     fun borrowBook(book: Book): String {
         val now: LocalDateTime = LocalDateTime.now()
-        if (this.userType == UserTypes.STUDENT && userAccount?.booksTaken?.count()!! > (this as Student).maxBooks) {
+        if (this.userType == UserTypes.STUDENT && userAccount?.booksTaken?.count()!! >= (this as Student).maxBooks) {
             return "Return some books to borrow books"
-        } else if (this.userType == UserTypes.FACULTY && userAccount?.booksTaken?.count()!! > (this as Faculty).maxBooks) {
+        } else if (this.userType == UserTypes.FACULTY && userAccount?.booksTaken?.count()!! >= (this as Faculty).maxBooks) {
             return "Return some books to borrow books"
         }
         userAccount?.booksTaken?.put(book, now)
