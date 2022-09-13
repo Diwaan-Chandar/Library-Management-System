@@ -1,6 +1,7 @@
 object Librarian {
     const val mailID: String = "lib@lib.com"
     private val data: LibrarianInterface = LibraryData
+    private val userType: UserTypes = UserTypes.LIBRARIAN
 
     fun getBookDetails(): MutableMap<Int, Book> {
         return data.getBookDetails()
