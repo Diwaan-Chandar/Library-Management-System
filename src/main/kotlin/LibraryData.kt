@@ -31,12 +31,12 @@ object LibraryData: UserInterface, LibrarianInterface {
         bookRequests[title] = reason
     }
 
-    override fun addUser(mailID: String) {
-
+    override fun addUser(mailID: String, user: User) {
+        users[mailID] = user
     }
 
     override fun removeUser(mailID: String) {
-
+        users.remove(mailID)
     }
 
     override fun getBookDetails(): MutableMap<Int, Book> {

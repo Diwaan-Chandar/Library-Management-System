@@ -11,17 +11,17 @@
 //}
 
 fun main() {
-    val user: User = Student("ABC", "abc@lib.com", 19) // Add a new Student to the library
-    LibraryData.addBook("Harry Potter", "JK Rowling") // Add new Books
-    LibraryData.addBook("400 Days", "Chetan Bhagat")
+    val user: User = Librarian.addStudent("ABC", "abc@lib.com", 19) // Add a new Student to the library
+    Librarian.addBook("Harry Potter", "JK Rowling") // Add new Books
+    Librarian.addBook("400 Days", "Chetan Bhagat")
     if (Authenticator.authenticateUser("abc@lib.com")) { // Verify user ID
         user.enterLibrary() // User enters library
         println("Entered Library...")
         println("Books Available: ")
-        val availableBooks = LibraryData.getBookDetails() // User searches book
-        for (eachBookID in availableBooks.keys) {
-            if (availableBooks[eachBookID]?.isAvailable == true) {
-                println("${availableBooks[eachBookID]?.bookID} ${availableBooks[eachBookID]?.title} ${availableBooks[eachBookID]?.author} ")
+        val availableBooks = Librarian.getBookDetails() // User searches book
+        for (book in availableBooks.values) {
+            if (book.isAvailable == true) {
+                println("${book.bookID} ${book.title} ${book.author} ")
             }
         }
         val bookID = 101
@@ -239,11 +239,11 @@ fun main() {
     println()
     println()
 
-    LibraryData.addBook("Book 1", "Author 1")
-    LibraryData.addBook("Book 2", "Author 2")
-    LibraryData.addBook("Book 3", "Author 3")
-    LibraryData.addBook("Book 4", "Author 4")
-    LibraryData.addBook("Book 5", "Author 5")
+    Librarian.addBook("Book 1", "Author 1")
+    Librarian.addBook("Book 2", "Author 2")
+    Librarian.addBook("Book 3", "Author 3")
+    Librarian.addBook("Book 4", "Author 4")
+    Librarian.addBook("Book 5", "Author 5")
     println("5 books added to library")
 
     println()
@@ -313,4 +313,3 @@ fun main() {
     }
 
 }
-
