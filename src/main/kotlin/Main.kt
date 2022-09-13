@@ -302,9 +302,14 @@ fun main() {
     println()
     println()
 
-    val bookDetails = Librarian.getBookDetails()
+    val bookDetails = Librarian.getBookDetails() // Librarian checks for book details
     for(book in bookDetails.values) {
-        println("${book.bookID} ${book.title} ${book.author} ${book.isAvailable} ${book.holderMailID} ")
+        val message = if(book.isAvailable) {
+            "Available in Library"
+        } else {
+            "Borrowed by ${book.holderMailID}"
+        }
+        println("${book.bookID}\t${book.title}\t${book.author}\t$message ")
     }
 
 }
