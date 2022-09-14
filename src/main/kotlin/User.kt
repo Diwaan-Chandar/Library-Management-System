@@ -1,44 +1,47 @@
 import java.time.LocalDateTime
 import java.time.Duration
 
-abstract class User(private var name: String, private var mailID: String, private var age: Int) {
+abstract class User(
+    private var name: String,
+    private var mailID: String,
+    private var age: Int
+    ) {
     abstract val maxBooks: Int
     abstract val userType: UserTypes
-    private var userAccount: UserAccount? = null
+    abstract val borrowableDuration: Int // No of days borrowable
+    private var userAccount: UserAccount = UserAccount(this.mailID)
     private val data: UserInterface = LibraryData
     private var inLibrary: Boolean = false
 
     init {
-        this.userAccount = UserAccount(this.mailID)
         Authenticator.addCredential(mailID)
     }
 
     fun borrowBook(book: Book): String {
         val now: LocalDateTime = LocalDateTime.now()
-        if (this.userType == UserTypes.STUDENT && userAccount?.booksTaken?.count()!! >= (this as Student).maxBooks) {
+        if (this.userType == UserTypes.STUDENT && userAccount.booksTaken.count() >= (this as Student).maxBooks) {
             return "Return some books to borrow books"
-        } else if (this.userType == UserTypes.FACULTY && userAccount?.booksTaken?.count()!! >= (this as Faculty).maxBooks) {
+        } else if (this.userType == UserTypes.FACULTY && userAccount.booksTaken.count() >= (this as Faculty).maxBooks) {
             return "Return some books to borrow books"
         }
-        userAccount?.booksTaken?.put(book, now)
+        userAccount.booksTaken[book] = now
         data.borrowBook(book, mailID)
         return "Book borrowed"
     }
 
     fun returnBook(bookID: Int) {
-        var book: Book? = null
-        for(eachBook in userAccount?.booksTaken?.keys!!) {
-            if (eachBook.bookID == bookID) {
-                book = eachBook
+        for(book in userAccount.booksTaken.keys) {
+            if (book.bookID == bookID) {
+                val now: LocalDateTime = LocalDateTime.now()
+                val duration = Duration.between(now, userAccount.booksTaken[book])
+                if(duration.toDays().toInt() > borrowableDuration) {
+                    Librarian.addFineToUser((duration.toDays().toInt() - duration.toDays().toInt()) * 5, mailID)
+                }
+                userAccount.booksTaken.remove(book)
+                userAccount.booksReturned.add(book)
+                data.returnBook(book)
+                break
             }
-        }
-        val now: LocalDateTime = LocalDateTime.now()
-        val duration = Duration.between(now, userAccount?.booksTaken?.get(book))
-        Librarian.addFineToUser(duration.toDays().toInt(), mailID)
-        if (book != null) {
-            userAccount?.booksTaken?.remove(book)
-            userAccount?.booksReturned?.add(book)
-            data.returnBook(book)
         }
     }
 
@@ -46,8 +49,18 @@ abstract class User(private var name: String, private var mailID: String, privat
         data.requestBook(title, reason)
     }
 
-    fun booksInHand(): MutableMap<Book, LocalDateTime>? {
-        return userAccount?.booksTaken
+    fun reportMissingBook(bookID: Int) {
+        for(book in userAccount.booksTaken.keys) {
+            if (book.bookID == bookID) {
+                Librarian.addFineToUser(book.price, mailID)
+            }
+        }
+        returnBook(bookID)
+        Librarian.removeBook(bookID)
+    }
+
+    fun booksInHand(): MutableMap<Book, LocalDateTime> {
+        return userAccount.booksTaken
     }
 
     fun enterLibrary() {
@@ -58,7 +71,10 @@ abstract class User(private var name: String, private var mailID: String, privat
         inLibrary = false
     }
 
-    fun payFine(amount: Int) {
-        Librarian.removeFineFromUser(amount, mailID)
+    fun payFine(amount: Int): Boolean {
+        return if(amount == Librarian.getFineAmount(mailID)) {
+            Librarian.removeFineFromUser(amount, mailID)
+            true
+        } else false
     }
 }

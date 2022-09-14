@@ -3,8 +3,8 @@ object Librarian {
     private val data: LibrarianInterface = LibraryData
     private val userType: UserTypes = UserTypes.LIBRARIAN
 
-    fun addBook(title: String, author: String) {
-        LibraryData.addBook(title, author)
+    fun addBook(title: String, author: String, price: Int) {
+        LibraryData.addBook(title, author, price)
     }
 
     fun removeBook(bookID: Int) {
@@ -31,8 +31,8 @@ object Librarian {
         data.removeUser(mailID)
     }
 
-    fun addFineToUser(noOfDays: Int, mailID: String) {
-        data.addFineToUser(mailID, noOfDays)
+    fun addFineToUser(amount: Int, mailID: String) {
+        data.addFineToUser(mailID, amount)
     }
 
     fun removeFineFromUser(amount: Int, mailID: String) {
@@ -41,6 +41,14 @@ object Librarian {
 
     fun getRequests() : MutableMap<String, String> {
         return LibraryData.getRequests()
+    }
+
+    fun getFineAmount(mailID: String): Int {
+        return LibraryData.getFineAmount(mailID)
+    }
+
+    fun searchBook(title: String): MutableMap<Int, Book> {
+        return LibraryData.searchBook(title)
     }
 }
 
