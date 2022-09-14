@@ -55,7 +55,7 @@ object LibraryData {
 
     fun removeFineFromUser(mailID: String, amount: Int) {
         if(mailID in fineData.keys) {
-            fineData[mailID] = fineData[mailID]!! - amount
+            fineData[mailID] = (fineData[mailID] ?: return) - amount
         }
     }
 
