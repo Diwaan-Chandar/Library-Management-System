@@ -4,7 +4,7 @@ import java.time.Duration
 abstract class User(
     private var name: String,
     private var mailID: String,
-    private var age: Int
+    private var age: Int,
     ) {
     abstract val maxBooks: Int
     abstract val userType: UserTypes

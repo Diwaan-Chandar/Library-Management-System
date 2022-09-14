@@ -1,3 +1,5 @@
 enum class UserTypes {
-    STUDENT, FACULTY, LIBRARIAN
+    STUDENT,
+    FACULTY,
+    LIBRARIAN,
 }
