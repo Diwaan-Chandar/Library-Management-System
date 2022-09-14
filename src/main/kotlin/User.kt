@@ -10,7 +10,6 @@ abstract class User(
     abstract val userType: UserTypes
     abstract val borrowableDuration: Int // No of days borrowable
     private var userAccount: UserAccount = UserAccount(this.mailID)
-    private val data: UserInterface = LibraryData
     private var inLibrary: Boolean = false
 
     init {
@@ -25,7 +24,7 @@ abstract class User(
             return "Return some books to borrow books"
         }
         userAccount.booksTaken[book] = now
-        data.borrowBook(book, mailID)
+        Librarian.borrowBookForUser(book, mailID)
         return "Book borrowed"
     }
 
@@ -39,17 +38,17 @@ abstract class User(
                 }
                 userAccount.booksTaken.remove(book)
                 userAccount.booksReturned.add(book)
-                data.returnBook(book)
+                Librarian.returnBookForUser(book)
                 break
             }
         }
     }
 
     fun requestBook(title: String, reason: String) {
-        data.requestBook(title, reason)
+        Librarian.requestBookForUser(title, reason)
     }
 
-    fun reportMissingBook(bookID: Int) {
+    fun reportMissedBook(bookID: Int) {
         for(book in userAccount.booksTaken.keys) {
             if (book.bookID == bookID) {
                 Librarian.addFineToUser(book.price, mailID)

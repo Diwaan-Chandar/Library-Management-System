@@ -329,7 +329,7 @@ fun main() {
         }
 
         // User missed 104 - Book 1
-        user.reportMissingBook(104) // User reports missing book
+        user.reportMissedBook(104) // User reports missed book
         var fine = Librarian.getFineAmount("abc@lib.com")
         println(fine)
 
