@@ -50,11 +50,7 @@ object LibraryData {
     }
 
     fun addFineToUser(mailID: String, amount: Int) {
-        if(mailID !in fineData.keys) {
-            fineData[mailID] = amount
-        } else {
-            fineData[mailID] = fineData[mailID]!! + amount
-        }
+        fineData[mailID] = (fineData[mailID] ?: 0) + amount
     }
 
     fun removeFineFromUser(mailID: String, amount: Int) {
