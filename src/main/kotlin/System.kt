@@ -1,15 +1,3 @@
-//fun signIn(mailID: String, password: String) {
-//    Authenticator.authenticateUser(mailID, password)
-//    Home.userHome(mailID) //If logged In as user
-//    Home.librarianHome(mailID) //If logged In as librarian
-//}
-//
-//fun signUp() {
-//    Validator.isEmailValid("")
-//    Validator.isPasswordValid("")
-//    Librarian.addUser("Mail ID Here")
-//}
-
 fun main() {
     Librarian.addBook("Harry Potter", "JK Rowling", 500) // Librarian adds new Books
     Librarian.addBook("400 Days", "Chetan Bhagat", 250)
@@ -116,7 +104,7 @@ fun main() {
         val bookID = 101
         if (borrowedBooks.isEmpty()) {
             println("No books in hand") // User has no books in hand
-        } else { // This is not executed
+        } else {                        // This is not executed
             for ((book, date) in borrowedBooks.entries) {
                 println("${book.bookID} ${book.title} $date ")
             }
@@ -320,7 +308,7 @@ fun main() {
         user.enterLibrary() // User enters library
         println("Entered Library...")
         println("Books in hand:")
-        var borrowedBooks = user.booksInHand() // User checks books in hand
+        val borrowedBooks = user.booksInHand() // User checks books in hand
         if (borrowedBooks.isEmpty() == true) {
             println("No books in hand")
         }
