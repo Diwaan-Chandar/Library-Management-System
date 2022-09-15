@@ -3,10 +3,10 @@ object LibraryData {
     private val users = mutableMapOf<String, User>()                // Mail ID to User object reference
     private val bookRequests = mutableMapOf<String, String>()      // Book Name to Reason
     private var bookID = 101
-    private val fineData = mutableMapOf<String, Int>()          // MailID to Fine Amount of Users
+    private val fineData = mutableMapOf<String, Int>()           // MailID to Fine Amount of Users
 
     fun addBook(title: String, author: String, price: Int) {
-        booksAvailable[bookID] = Book(bookID ++, title, author, price)
+        booksAvailable[bookID] = Book(bookID++, title, author, price)
     }
 
     fun removeBook(bookID: Int) {
@@ -14,13 +14,13 @@ object LibraryData {
     }
 
     fun borrowBook(book: Book, mailID: String) {
-        booksAvailable[book.bookID]?.isAvailable = false
-        booksAvailable[book.bookID]?.holderMailID = mailID
+        book.isAvailable = false
+        book.holderMailID = mailID
     }
 
     fun returnBook(book: Book) {
-        booksAvailable[book.bookID]?.isAvailable = true
-        booksAvailable[book.bookID]?.holderMailID = null
+        book.isAvailable = true
+        book.holderMailID = null
     }
 
     fun requestBook(title: String, reason: String) {
@@ -35,9 +35,7 @@ object LibraryData {
         users.remove(mailID)
     }
 
-    fun getBookDetails(): MutableMap<Int, Book> {
-        return booksAvailable
-    }
+    fun getBookDetails(): MutableMap<Int, Book> = booksAvailable
 
     fun searchBook(title: String): MutableMap<Int, Book> {
         val matchingBooks = mutableMapOf<Int, Book>()
@@ -60,12 +58,9 @@ object LibraryData {
     }
 
     fun getFineAmount(mailID: String): Int {
-        if(mailID !in fineData.keys) return 0
-        return fineData[mailID]!!
+        return fineData[mailID] ?: 0
     }
 
-    fun getRequests(): MutableMap<String, String> {
-        return bookRequests
-    }
+    fun getRequests(): MutableMap<String, String> = bookRequests
 }
 
