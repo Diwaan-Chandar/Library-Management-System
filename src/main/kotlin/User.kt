@@ -18,14 +18,15 @@ abstract class User(
 
     fun borrowBook(book: Book): String {
         val now: LocalDateTime = LocalDateTime.now()
-        if (this.userType == UserTypes.STUDENT && userAccount.booksTaken.count() >= (this as Student).maxBooks) {
-            return "Return some books to borrow books"
+        return if (this.userType == UserTypes.STUDENT && userAccount.booksTaken.count() >= (this as Student).maxBooks) {
+            "Return some books to borrow books"
         } else if (this.userType == UserTypes.FACULTY && userAccount.booksTaken.count() >= (this as Faculty).maxBooks) {
-            return "Return some books to borrow books"
+            "Return some books to borrow books"
+        } else {
+            userAccount.booksTaken[book] = now
+            Librarian.borrowBookForUser(book, mailID)
+            "Book borrowed"
         }
-        userAccount.booksTaken[book] = now
-        Librarian.borrowBookForUser(book, mailID)
-        return "Book borrowed"
     }
 
     fun returnBook(bookID: Int) {
